@@ -1,6 +1,6 @@
-import sql from 'better-sqlite3';
+import sql from "better-sqlite3";
 
-const db = sql('training.db');
+const db = sql("training.db");
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
@@ -26,8 +26,10 @@ db.exec(`
   );
 `);
 
-const hasTrainings =
-  db.prepare('SELECT COUNT(*) as count FROM trainings').get().count > 0;
+const stmt = db.prepare<unknown[], { count: number }>(
+  "SELECT COUNT(*) as count FROM trainings"
+);
+const hasTrainings = stmt.get()!.count > 0;
 
 if (!hasTrainings) {
   db.exec(`
